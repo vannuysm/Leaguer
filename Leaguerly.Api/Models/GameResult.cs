@@ -13,8 +13,9 @@ namespace Leaguerly.Api.Models
         public ICollection<Goal> Goals { get; set; }
 
         public GameResult() {
-            if (Goals == null)
+            if (Goals == null) {
                 Goals = new Collection<Goal>();
+            }
         }
     }
 }
