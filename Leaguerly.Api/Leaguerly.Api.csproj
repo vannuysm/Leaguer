@@ -80,7 +80,11 @@
     <Reference Include="System.Net.Http">
     </Reference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201403140322018_InitialCreate.resx">
+      <DependentUpon>201403140322018_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\DivisionsController.cs" />
@@ -91,6 +95,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201403140322018_InitialCreate.cs" />
+    <Compile Include="Migrations\201403140322018_InitialCreate.Designer.cs">
+      <DependentUpon>201403140322018_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Division.cs" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="Models\GameResult.cs" />
