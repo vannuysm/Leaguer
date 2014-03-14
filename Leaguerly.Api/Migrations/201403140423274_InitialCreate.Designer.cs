@@ -13,7 +13,7 @@ namespace Leaguerly.Api.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201403140322018_InitialCreate"; }
+            get { return "201403140423274_InitialCreate"; }
         }
         
         string IMigrationMetadata.Source

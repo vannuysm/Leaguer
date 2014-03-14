@@ -7,7 +7,6 @@ namespace Leaguerly.Api.Migrations
     {
         public Configuration() {
             AutomaticMigrationsEnabled = false;
-            ContextKey = "Leaguerly.Api.Models.LeaguerlyDbContext";
         }
     }
 }

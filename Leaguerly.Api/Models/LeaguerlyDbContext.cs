@@ -8,6 +8,11 @@ namespace Leaguerly.Api.Models
         public DbSet<Division> Divisions { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<Player> Players { get; set; }
+        public DbSet<Game> Games { get; set; }
+        public DbSet<GameResult> GameResults { get; set; }
+        public DbSet<Goal> Goals { get; set; }
+        public DbSet<Location> Locations { get; set; }
+        public DbSet<Field> Fields { get; set; }
 
         public LeaguerlyDbContext() : base("LeaguerlyDb") { }
 
