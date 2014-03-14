@@ -1,44 +1,55 @@
-﻿using System.Linq;
-using Leaguerly.Repositories;
-using Leaguerly.Repositories.DataModels;
+﻿using Leaguerly.Api.Models;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace Leaguerly.Api.Controllers
 {
     public class DivisionsController : ApiController
     {
-        private readonly IDivisionRepository _divisionRepo;
+        private readonly LeaguerlyDbContext _db;
 
-        public DivisionsController(IDivisionRepository divisionRepo) {
-            _divisionRepo = divisionRepo;
+        public DivisionsController(LeaguerlyDbContext db) {
+            _db = db;
         }
 
-        public IEnumerable<Division> Get() {
-            var divisions = _divisionRepo.All();
+        public async Task<IEnumerable<Division>> Get() {
+            var divisions = await _db.Divisions.ToListAsync();
             return divisions;
         }
 
-        public IEnumerable<Division> GetByLeagueId(int leagueId) {
-            var divisions = _divisionRepo.Query.Where(division => division.LeagueId == leagueId);
+        public async Task<IEnumerable<Division>> GetByLeagueId(int leagueId) {
+            var divisions = await _db.Divisions
+                .Where(division => division.LeagueId == leagueId)
+                .ToListAsync();
+
             return divisions;
         }
 
-        public Division Get(int id) {
-            var division = _divisionRepo.Get(id);
+        public async Task<Division> Get(int id) {
+            var division = await _db.Divisions.FindAsync(id);
             return division;
         }
 
-        public void Post([FromBody] Division division) {
-            _divisionRepo.Create(division);
+        public async Task Post([FromBody] Division division) {
+            _db.Divisions.Add(division);
+            await _db.SaveChangesAsync();
         }
 
-        public void Put(int id, [FromBody] Division division) {
-            _divisionRepo.Update(division);
+        public async Task Put(int id, [FromBody] Division division) {
+            division.Id = id;
+
+            _db.Entry(division).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
         }
 
-        public void Delete(int id) {
-            _divisionRepo.Delete(id);
+        public async Task Delete(int id) {
+            var division = new Division { Id = id };
+
+            _db.Divisions.Remove(division);
+            await _db.SaveChangesAsync();
         }
     }
 }

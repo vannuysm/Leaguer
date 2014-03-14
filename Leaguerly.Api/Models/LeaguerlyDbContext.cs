@@ -1,7 +1,6 @@
 ﻿using System.Data.Entity;
-using Leaguerly.Repositories.DataModels;
 
-namespace Leaguerly.Repositories.Ef
+namespace Leaguerly.Api.Models
 {
     public class LeaguerlyDbContext : DbContext
     {
@@ -10,7 +9,7 @@ namespace Leaguerly.Repositories.Ef
         public DbSet<Team> Teams { get; set; }
         public DbSet<Player> Players { get; set; }
 
-        internal LeaguerlyDbContext() : base("LeaguerlyDb") { }
+        public LeaguerlyDbContext() : base("LeaguerlyDb") { }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder) {
             RegisterLeagueModel(modelBuilder);

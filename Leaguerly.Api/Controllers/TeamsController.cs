@@ -1,38 +1,46 @@
-﻿using Leaguerly.Repositories;
-using Leaguerly.Repositories.DataModels;
+﻿using Leaguerly.Api.Models;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace Leaguerly.Api.Controllers
 {
     public class TeamsController : ApiController
     {
-        private readonly IRepository<Team, int> _teamRepo;
+        private readonly LeaguerlyDbContext _db;
 
-        public TeamsController(IRepository<Team, int> teamRepo) {
-            _teamRepo = teamRepo;
+        public TeamsController(LeaguerlyDbContext db) {
+            _db = db;
         }
 
-        public IEnumerable<Team> Get() {
-            var teams = _teamRepo.All();
+        public async Task<IEnumerable<Team>> Get() {
+            var teams = await _db.Teams.ToListAsync();
             return teams;
         }
 
-        public Team Get(int id) {
-            var team = _teamRepo.Get(id);
+        public async Task<Team> Get(int id) {
+            var team = await _db.Teams.FindAsync(id);
             return team;
         }
 
-        public void Post([FromBody] Team team) {
-            _teamRepo.Create(team);
+        public async Task Post([FromBody] Team team) {
+            _db.Teams.Add(team);
+            await _db.SaveChangesAsync();
         }
 
-        public void Put(int id, [FromBody] Team team) {
-            _teamRepo.Update(team);
+        public async Task Put(int id, [FromBody] Team team) {
+            team.Id = id;
+
+            _db.Entry(team).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
         }
 
-        public void Delete(int id) {
-            _teamRepo.Delete(id);
+        public async Task Delete(int id) {
+            var team = new Team { Id = id };
+
+            _db.Teams.Remove(team);
+            await _db.SaveChangesAsync();
         }
     }
 }

@@ -2,9 +2,9 @@
 using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
 
-namespace Leaguerly.Repositories.DataModels
+namespace Leaguerly.Api.Models
 {
-    public class Division : IDbEntity<int>
+    public class Division
     {
         public int Id { get; set; }
         public string Name { get; set; }

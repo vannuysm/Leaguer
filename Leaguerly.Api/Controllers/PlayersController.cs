@@ -1,38 +1,46 @@
-﻿using Leaguerly.Repositories;
-using Leaguerly.Repositories.DataModels;
+﻿using Leaguerly.Api.Models;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace Leaguerly.Api.Controllers
 {
     public class PlayersController : ApiController
     {
-        private readonly IRepository<Player, int> _playerRepo;
+        private readonly LeaguerlyDbContext _db;
 
-        public PlayersController(IRepository<Player, int> playerRepo) {
-            _playerRepo = playerRepo;
+        public PlayersController(LeaguerlyDbContext db) {
+            _db = db;
         }
 
-        public IEnumerable<Player> Get() {
-            var players = _playerRepo.All();
+        public async Task<IEnumerable<Player>> Get() {
+            var players = await _db.Players.ToListAsync();
             return players;
         }
 
-        public Player Get(int id) {
-            var player = _playerRepo.Get(id);
+        public async Task<Player> Get(int id) {
+            var player = await _db.Players.FindAsync(id);
             return player;
         }
 
-        public void Post([FromBody] Player player) {
-            _playerRepo.Create(player);
+        public async Task Post([FromBody] Player player) {
+            _db.Players.Add(player);
+            await _db.SaveChangesAsync();
         }
 
-        public void Put(int id, [FromBody] Player player) {
-            _playerRepo.Update(player);
+        public async Task Put(int id, [FromBody] Player player) {
+            player.Id = id;
+
+            _db.Entry(player).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
         }
 
-        public void Delete(int id) {
-            _playerRepo.Delete(id);
+        public async Task Delete(int id) {
+            var player = new Player { Id = id };
+
+            _db.Players.Remove(player);
+            await _db.SaveChangesAsync();
         }
     }
 }

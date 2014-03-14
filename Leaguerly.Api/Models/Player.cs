@@ -2,9 +2,9 @@
 using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
 
-namespace Leaguerly.Repositories.DataModels
+namespace Leaguerly.Api.Models
 {
-    public class Player : IDbEntity<int>
+    public class Player
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
