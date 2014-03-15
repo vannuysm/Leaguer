@@ -83,6 +83,7 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\DivisionsController.cs" />
+    <Compile Include="Controllers\GoalsController.cs" />
     <Compile Include="Controllers\LeaguesController.cs" />
     <Compile Include="Controllers\PlayersController.cs" />
     <Compile Include="Controllers\TeamsController.cs" />
@@ -93,6 +94,10 @@
     <Compile Include="Migrations\201403140423274_InitialCreate.cs" />
     <Compile Include="Migrations\201403140423274_InitialCreate.Designer.cs">
       <DependentUpon>201403140423274_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201403150312269_AddedDivisionToGames.cs" />
+    <Compile Include="Migrations\201403150312269_AddedDivisionToGames.Designer.cs">
+      <DependentUpon>201403150312269_AddedDivisionToGames.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Division.cs" />
@@ -117,6 +122,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201403140423274_InitialCreate.resx">
       <DependentUpon>201403140423274_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201403150312269_AddedDivisionToGames.resx">
+      <DependentUpon>201403150312269_AddedDivisionToGames.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -14,9 +14,16 @@ namespace Leaguerly.Api.Models
         [IgnoreDataMember]
         public ICollection<Team> Teams { get; set; }
 
+        [IgnoreDataMember]
+        public ICollection<Game> Games { get; set; }
+
         public Division() {
             if (Teams == null) {
                 Teams = new Collection<Team>();
+            }
+
+            if (Games == null) {
+                Games = new Collection<Game>();
             }
         }
     }

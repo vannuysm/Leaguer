@@ -10,6 +10,7 @@ namespace Leaguerly.Api.Models
         public DateTime Date { get; set; }
         public Location Location { get; set; }
         public GameResult Result { get; set; }
+        public int DivisionId { get; set; }
 
         public Game() {
             if (HomeTeam == null) {
