@@ -12,7 +12,6 @@ namespace Leaguerly.Api.Models
         public DbSet<GameResult> GameResults { get; set; }
         public DbSet<Goal> Goals { get; set; }
         public DbSet<Location> Locations { get; set; }
-        public DbSet<Field> Fields { get; set; }
 
         public LeaguerlyDbContext() : base("LeaguerlyDb") { }
 

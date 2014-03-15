@@ -32,6 +32,10 @@ namespace Leaguerly.Api.Controllers
         public async Task<IHttpActionResult> Get(int id) {
             var division = await _db.Divisions.FindAsync(id);
 
+            if (division == null) {
+                return NotFound();
+            }
+
             return Ok(division);
         }
 

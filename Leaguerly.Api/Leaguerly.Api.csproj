@@ -84,11 +84,13 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\DivisionsController.cs" />
+    <Compile Include="Controllers\GamesController.cs" />
     <Compile Include="Controllers\GoalsController.cs" />
     <Compile Include="Controllers\LeaguesController.cs" />
     <Compile Include="Controllers\PlayersController.cs" />
     <Compile Include="Controllers\TeamsController.cs" />
     <Compile Include="DependencyResolver.cs" />
+    <Compile Include="Extensions\GamesDbSetExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -100,9 +102,12 @@
     <Compile Include="Migrations\201403150312269_AddedDivisionToGames.Designer.cs">
       <DependentUpon>201403150312269_AddedDivisionToGames.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201403150411563_RemovedFieldsEntity.cs" />
+    <Compile Include="Migrations\201403150411563_RemovedFieldsEntity.Designer.cs">
+      <DependentUpon>201403150411563_RemovedFieldsEntity.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Division.cs" />
-    <Compile Include="Models\Field.cs" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="Models\GameResult.cs" />
     <Compile Include="Models\Goal.cs" />
@@ -126,6 +131,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201403150312269_AddedDivisionToGames.resx">
       <DependentUpon>201403150312269_AddedDivisionToGames.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201403150411563_RemovedFieldsEntity.resx">
+      <DependentUpon>201403150411563_RemovedFieldsEntity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

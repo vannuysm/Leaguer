@@ -23,6 +23,10 @@ namespace Leaguerly.Api.Controllers
         public async Task<IHttpActionResult> Get(int id) {
             var player = await _db.Players.FindAsync(id);
 
+            if (player == null) {
+                return NotFound();
+            }
+
             return Ok(player);
         }
 

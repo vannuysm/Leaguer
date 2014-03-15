@@ -17,7 +17,7 @@ namespace Leaguerly.Api.Controllers
         }
 
         [Route("players")]
-        public async Task<IHttpActionResult> GetByPlayer() {
+        public async Task<IHttpActionResult> GetAllPlayers() {
             var goals = await _db.Goals
                 .GroupBy(goal => goal.Player)
                 .Select(group => new {
@@ -32,6 +32,10 @@ namespace Leaguerly.Api.Controllers
         [Route("players/{id}")]
         public async Task<IHttpActionResult> GetByPlayer(int id) {
             var player = await _db.Players.SingleOrDefaultAsync(p => p.Id == id);
+
+            if (player == null) {
+                return NotFound();
+            }
 
             var goals = await _db.Goals
                 .Where(goal => goal.Player.Id == id)
