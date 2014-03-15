@@ -1,9 +1,6 @@
 ﻿using Leaguerly.Api.Models;
-using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
 
 public static class GamesDbSetExtensions
 {
@@ -14,6 +11,7 @@ public static class GamesDbSetExtensions
             .Include(game => game.Location)
             .Include(game => game.Result)
             .Include(game => game.Result.Goals)
-            .Include(game => game.Result.Goals.Select(goal => goal.Player));
+            .Include(game => game.Result.Goals.Select(goal => goal.Player))
+            .Include(game => game.Result.Goals.Select(goal => goal.Player.Teams));
     }
 }

@@ -11,6 +11,7 @@ namespace Leaguerly.Api.Models
         public Location Location { get; set; }
         public GameResult Result { get; set; }
         public int DivisionId { get; set; }
+        public bool HasResult { get { return Result.Id > 0; }}
 
         public Game() {
             if (HomeTeam == null) {

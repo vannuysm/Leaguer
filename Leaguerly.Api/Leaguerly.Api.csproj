@@ -115,6 +115,8 @@
     <Compile Include="Models\LeaguerlyDbContext.cs" />
     <Compile Include="Models\Location.cs" />
     <Compile Include="Models\Player.cs" />
+    <Compile Include="Models\Standing.cs" />
+    <Compile Include="Models\Score.cs" />
     <Compile Include="Models\Team.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

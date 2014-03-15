@@ -1,4 +1,5 @@
 ﻿using Leaguerly.Api.Models;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -7,6 +8,7 @@ using System.Web.Http;
 
 namespace Leaguerly.Api.Controllers
 {
+    [RoutePrefix("api/divisions")]
     public class DivisionsController : ApiController
     {
         private readonly LeaguerlyDbContext _db;
@@ -37,6 +39,18 @@ namespace Leaguerly.Api.Controllers
             }
 
             return Ok(division);
+        }
+
+        [Route("{id}/standings")]
+        public async Task<IHttpActionResult> GetDivisionStandings(int id) {
+            var games = await _db.Games
+                .WithDetails()
+                .Where(game => game.DivisionId == id && game.Result.Id > 0)
+                .ToListAsync();
+
+            var standings = Standing.CalculateStandings(games);
+
+            return Ok(standings);
         }
 
         public async Task<IHttpActionResult> Post([FromBody] Division division) {
