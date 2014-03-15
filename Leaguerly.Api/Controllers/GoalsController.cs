@@ -1,11 +1,8 @@
-﻿using System.Linq;
-using Leaguerly.Api.Models;
-using System.Collections.Generic;
+﻿using Leaguerly.Api.Models;
 using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Net.Http;
-using System.Web.Http.Results;
 
 namespace Leaguerly.Api.Controllers
 {
@@ -29,6 +26,17 @@ namespace Leaguerly.Api.Controllers
                 .ToListAsync();
 
             return Ok(goals);
+        }
+
+        [Route("players/{id}")]
+        public async Task<IHttpActionResult> GetByPlayer(int id) {
+            var player = await _db.Players.SingleOrDefaultAsync(p => p.Id == id);
+
+            var goals = await _db.Goals
+                .Where(goal => goal.Player.Id == id)
+                .SumAsync(goal => goal.Count);
+
+            return Ok(new { Player = player, Goals = goals });
         }
 
         [Route("divisions")]
