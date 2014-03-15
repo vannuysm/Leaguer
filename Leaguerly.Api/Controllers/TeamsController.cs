@@ -1,6 +1,6 @@
 ﻿using Leaguerly.Api.Models;
-using System.Collections.Generic;
 using System.Data.Entity;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -14,33 +14,41 @@ namespace Leaguerly.Api.Controllers
             _db = db;
         }
 
-        public async Task<IEnumerable<Team>> Get() {
+        public async Task<IHttpActionResult> Get() {
             var teams = await _db.Teams.ToListAsync();
-            return teams;
+
+            return Ok(teams);
         }
 
-        public async Task<Team> Get(int id) {
+        public async Task<IHttpActionResult> Get(int id) {
             var team = await _db.Teams.FindAsync(id);
-            return team;
+
+            return Ok(team);
         }
 
-        public async Task Post([FromBody] Team team) {
+        public async Task<IHttpActionResult> Post([FromBody] Team team) {
             _db.Teams.Add(team);
             await _db.SaveChangesAsync();
+
+            return CreatedAtRoute("DefaultApi", new { id = team.Id }, team);
         }
 
-        public async Task Put(int id, [FromBody] Team team) {
+        public async Task<IHttpActionResult> Put(int id, [FromBody] Team team) {
             team.Id = id;
 
             _db.Entry(team).State = EntityState.Modified;
             await _db.SaveChangesAsync();
+
+            return StatusCode(HttpStatusCode.NoContent);
         }
 
-        public async Task Delete(int id) {
+        public async Task<IHttpActionResult> Delete(int id) {
             var team = new Team { Id = id };
 
             _db.Teams.Remove(team);
             await _db.SaveChangesAsync();
+
+            return StatusCode(HttpStatusCode.NoContent);
         }
     }
 }

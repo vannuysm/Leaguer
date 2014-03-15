@@ -1,6 +1,7 @@
 ﻿using Leaguerly.Api.Models;
 using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -95,23 +96,29 @@ namespace Leaguerly.Api.Controllers
             return Ok(goals);
         }
 
-        public async Task Post([FromBody] Goal goal) {
+        public async Task<IHttpActionResult> Post([FromBody] Goal goal) {
             _db.Goals.Add(goal);
             await _db.SaveChangesAsync();
+
+            return CreatedAtRoute("DefaultApi", new { id = goal.Id }, goal);
         }
 
-        public async Task Put(int id, [FromBody] Goal goal) {
+        public async Task<IHttpActionResult> Put(int id, [FromBody] Goal goal) {
             goal.Id = id;
 
             _db.Entry(goal).State = EntityState.Modified;
             await _db.SaveChangesAsync();
+
+            return StatusCode(HttpStatusCode.NoContent);
         }
 
-        public async Task Delete(int id) {
+        public async Task<IHttpActionResult> Delete(int id) {
             var goal = new Goal { Id = id };
 
             _db.Goals.Remove(goal);
             await _db.SaveChangesAsync();
+
+            return StatusCode(HttpStatusCode.NoContent);
         }
     }
 }

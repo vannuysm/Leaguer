@@ -1,4 +1,5 @@
-﻿using Leaguerly.Api.Models;
+﻿using System.Net;
+using Leaguerly.Api.Models;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -15,41 +16,49 @@ namespace Leaguerly.Api.Controllers
             _db = db;
         }
 
-        public async Task<IEnumerable<Division>> Get() {
+        public async Task<IHttpActionResult> Get() {
             var divisions = await _db.Divisions.ToListAsync();
-            return divisions;
+
+            return Ok(divisions);
         }
 
-        public async Task<IEnumerable<Division>> GetByLeagueId(int leagueId) {
+        public async Task<IHttpActionResult> GetByLeagueId(int leagueId) {
             var divisions = await _db.Divisions
                 .Where(division => division.LeagueId == leagueId)
                 .ToListAsync();
 
-            return divisions;
+            return Ok(divisions);
         }
 
-        public async Task<Division> Get(int id) {
+        public async Task<IHttpActionResult> Get(int id) {
             var division = await _db.Divisions.FindAsync(id);
-            return division;
+
+            return Ok(division);
         }
 
-        public async Task Post([FromBody] Division division) {
+        public async Task<IHttpActionResult> Post([FromBody] Division division) {
             _db.Divisions.Add(division);
             await _db.SaveChangesAsync();
+
+            return CreatedAtRoute("DefaultApi", new { id = division.Id }, division);
         }
 
-        public async Task Put(int id, [FromBody] Division division) {
+        public async Task<IHttpActionResult> Put(int id, [FromBody] Division division) {
             division.Id = id;
 
             _db.Entry(division).State = EntityState.Modified;
             await _db.SaveChangesAsync();
+
+            return StatusCode(HttpStatusCode.NoContent);
         }
 
-        public async Task Delete(int id) {
+        public async Task<IHttpActionResult> Delete(int id) {
             var division = new Division { Id = id };
 
             _db.Divisions.Remove(division);
             await _db.SaveChangesAsync();
+
+            return StatusCode(HttpStatusCode.NoContent);
         }
     }
 }
