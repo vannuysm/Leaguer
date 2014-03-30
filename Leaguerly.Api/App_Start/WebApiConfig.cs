@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Serialization;
+﻿using Microsoft.Owin.Security.OAuth;
+using Newtonsoft.Json.Serialization;
 using System.Web.Http;
 
 namespace Leaguerly.Api
@@ -7,6 +8,8 @@ namespace Leaguerly.Api
     {
         public static void Register(HttpConfiguration config) {
             config.DependencyResolver = DependencyResolver.GetResolver();
+            config.SuppressDefaultHostAuthentication();
+            config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
 
             config.MapHttpAttributeRoutes();
             config.Routes.MapHttpRoute(

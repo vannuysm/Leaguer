@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Leaguerly.Api.Models;
+﻿using Leaguerly.Api.Models;
 using System.Data.Entity;
 using System.Net;
 using System.Threading.Tasks;
@@ -35,6 +34,7 @@ namespace Leaguerly.Api.Controllers
             return Ok(game);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IHttpActionResult> Post([FromBody] Game game) {
             _db.Games.Add(game);
             await _db.SaveChangesAsync();
@@ -42,6 +42,7 @@ namespace Leaguerly.Api.Controllers
             return CreatedAtRoute("DefaultApi", new { id = game.Id }, game);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IHttpActionResult> Put(int id, [FromBody] Game game) {
             game.Id = id;
 
@@ -51,6 +52,7 @@ namespace Leaguerly.Api.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IHttpActionResult> Delete(int id) {
             var game = new Game { Id = id };
 

@@ -100,6 +100,7 @@ namespace Leaguerly.Api.Controllers
             return Ok(goals);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IHttpActionResult> Post([FromBody] Goal goal) {
             _db.Goals.Add(goal);
             await _db.SaveChangesAsync();
@@ -107,6 +108,7 @@ namespace Leaguerly.Api.Controllers
             return CreatedAtRoute("DefaultApi", new { id = goal.Id }, goal);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IHttpActionResult> Put(int id, [FromBody] Goal goal) {
             goal.Id = id;
 
@@ -116,6 +118,7 @@ namespace Leaguerly.Api.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IHttpActionResult> Delete(int id) {
             var goal = new Goal { Id = id };
 

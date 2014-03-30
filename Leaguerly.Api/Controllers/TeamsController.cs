@@ -30,6 +30,7 @@ namespace Leaguerly.Api.Controllers
             return Ok(team);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IHttpActionResult> Post([FromBody] Team team) {
             _db.Teams.Add(team);
             await _db.SaveChangesAsync();
@@ -37,6 +38,7 @@ namespace Leaguerly.Api.Controllers
             return CreatedAtRoute("DefaultApi", new { id = team.Id }, team);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IHttpActionResult> Put(int id, [FromBody] Team team) {
             team.Id = id;
 
@@ -46,6 +48,7 @@ namespace Leaguerly.Api.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IHttpActionResult> Delete(int id) {
             var team = new Team { Id = id };
 

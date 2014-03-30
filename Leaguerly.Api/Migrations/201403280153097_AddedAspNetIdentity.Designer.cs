@@ -6,14 +6,14 @@ namespace Leaguerly.Api.Migrations
     using System.Data.Entity.Migrations.Infrastructure;
     using System.Resources;
     
-    [GeneratedCode("EntityFramework.Migrations", "6.0.2-21211")]
-    public sealed partial class AddedDivisionToGames : IMigrationMetadata
+    [GeneratedCode("EntityFramework.Migrations", "6.1.0-30225")]
+    public sealed partial class AddedAspNetIdentity : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddedDivisionToGames));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddedAspNetIdentity));
         
         string IMigrationMetadata.Id
         {
-            get { return "201403150312269_AddedDivisionToGames"; }
+            get { return "201403280153097_AddedAspNetIdentity"; }
         }
         
         string IMigrationMetadata.Source

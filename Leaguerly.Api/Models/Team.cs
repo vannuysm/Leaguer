@@ -8,12 +8,21 @@ namespace Leaguerly.Api.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int DivisionId { get; set; }
+        public Division Division { get; set; }
+        public Manager Manager { get; set; }
 
         [IgnoreDataMember]
         public ICollection<Player> Players { get; set; }
 
         public Team() {
+            if (Division == null) {
+                Division = new Division();
+            }
+
+            if (Manager == null) {
+                Manager = new Manager();
+            }
+
             if (Players == null) {
                 Players = new Collection<Player>();
             }

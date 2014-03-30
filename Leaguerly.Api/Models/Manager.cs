@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 
 namespace Leaguerly.Api.Models
 {
-    public class Player
+    public class Manager
     {
         public int Id { get; set; }
         public Contact Contact { get; set; }
@@ -12,7 +12,7 @@ namespace Leaguerly.Api.Models
         [IgnoreDataMember]
         public ICollection<Team> Teams { get; set; }
 
-        public Player() {
+        public Manager() {
             if (Teams == null) {
                 Teams = new Collection<Team>();
             }

@@ -1,5 +1,4 @@
 ﻿using Leaguerly.Api.Models;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -15,12 +14,6 @@ namespace Leaguerly.Api.Controllers
 
         public DivisionsController(LeaguerlyDbContext db) {
             _db = db;
-        }
-
-        public async Task<IHttpActionResult> Get() {
-            var divisions = await _db.Divisions.ToListAsync();
-
-            return Ok(divisions);
         }
 
         public async Task<IHttpActionResult> GetByLeagueId(int leagueId) {
@@ -53,6 +46,7 @@ namespace Leaguerly.Api.Controllers
             return Ok(standings);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IHttpActionResult> Post([FromBody] Division division) {
             _db.Divisions.Add(division);
             await _db.SaveChangesAsync();
@@ -60,6 +54,7 @@ namespace Leaguerly.Api.Controllers
             return CreatedAtRoute("DefaultApi", new { id = division.Id }, division);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IHttpActionResult> Put(int id, [FromBody] Division division) {
             division.Id = id;
 
@@ -69,6 +64,7 @@ namespace Leaguerly.Api.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IHttpActionResult> Delete(int id) {
             var division = new Division { Id = id };
 
