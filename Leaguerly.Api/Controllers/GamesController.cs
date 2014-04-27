@@ -1,5 +1,6 @@
 ﻿using Leaguerly.Api.Models;
 using System.Data.Entity;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -14,7 +15,7 @@ namespace Leaguerly.Api.Controllers
             _db = db;
         }
 
-        public async Task<IHttpActionResult> Get() {
+        public async Task<IHttpActionResult> GetGames() {
             var games = await _db.Games
                 .WithDetails()
                 .ToListAsync();
@@ -22,7 +23,7 @@ namespace Leaguerly.Api.Controllers
             return Ok(games);
         }
 
-        public async Task<IHttpActionResult> Get(int id) {
+        public async Task<IHttpActionResult> GetGame(int id) {
             var game = await _db.Games
                 .WithDetails()
                 .SingleOrDefaultAsync(g => g.Id == id);

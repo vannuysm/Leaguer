@@ -1,19 +1,24 @@
 ﻿using System.ComponentModel.DataAnnotations;
+
 namespace Leaguerly.Api.Models
 {
-    public class Contact
+    public class Profile
     {
         public int Id { get; set; }
-        [Required]
-        public string FirstName { get; set; }
-        [Required]
-        public string LastName { get; set; }
-        [Required]
-        public string Email { get; set; }
+        public string UserId { get; set; }
         public string Phone { get; set; }
         public Address MailingAddress { get; set; }
 
-        public Contact() {
+        [Required]
+        public string FirstName { get; set; }
+
+        [Required]
+        public string LastName { get; set; }
+
+        [Required]
+        public string Email { get; set; }
+
+        public Profile() {
             if (MailingAddress == null) {
                 MailingAddress = new Address();
             }

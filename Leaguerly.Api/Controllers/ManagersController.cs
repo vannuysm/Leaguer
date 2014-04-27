@@ -1,10 +1,10 @@
 ﻿using Leaguerly.Api.Extensions;
 using Leaguerly.Api.Models;
 using System.Data.Entity;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Linq;
 
 namespace Leaguerly.Api.Controllers
 {
@@ -38,19 +38,24 @@ namespace Leaguerly.Api.Controllers
                 return StatusCode(HttpStatusCodeExtensions.UnprocessableEntity);
             }
 
-            var managerExists = await _db.Managers.AnyAsync(m => m.Contact.Email == manager.Contact.Email);
+            var managerExists = await _db.Managers.AnyAsync(m => m.Profile.Email == manager.Profile.Email);
             if (managerExists) {
                 return Conflict();
             }
 
-            manager.Contact.Id = await _db.Contacts
-                .Where(m => m.Email == manager.Contact.Email)
-                .Select(m => m.Id)
+            var existingProfile = await _db.Profiles
+                .Where(m => m.Email == manager.Profile.Email)
                 .SingleOrDefaultAsync();
-            
+
             _db.Managers.Add(manager);
-            if (manager.Contact.Id > 0) {
-                _db.Entry(manager.Contact).State = EntityState.Modified;
+            if (existingProfile != null) {
+                manager.Profile.Id = existingProfile.Id;
+                manager.Profile.UserId = await _db.Users
+                    .Where(user => user.Email == manager.Profile.Email)
+                    .Select(user => user.Id)
+                    .SingleOrDefaultAsync() ?? existingProfile.UserId;
+
+                _db.Entry(manager.Profile).State = EntityState.Modified;
             }
 
             await _db.SaveChangesAsync();

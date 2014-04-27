@@ -1,10 +1,10 @@
-﻿using System.Reflection;
-using System.Web.Http.Dependencies;
+﻿using System.Web.Http.Dependencies;
 using Autofac;
 using Autofac.Integration.WebApi;
 using Leaguerly.Api.Models;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System.Reflection;
 
 namespace Leaguerly.Api
 {

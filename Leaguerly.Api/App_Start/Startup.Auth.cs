@@ -3,10 +3,13 @@ using Leaguerly.Api.Providers;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin;
+using Microsoft.Owin.Cors;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
 using System;
+using System.Threading.Tasks;
+using System.Web.Cors;
 
 namespace Leaguerly.Api
 {
@@ -34,8 +37,22 @@ namespace Leaguerly.Api
             };
         }
 
-        public void ConfigureAuth(IAppBuilder app)
-        {
+        public void ConfigureAuth(IAppBuilder app) {
+            var tokenCorsPolicy = new CorsPolicy {
+                AllowAnyOrigin = true,
+                AllowAnyHeader = true,
+                AllowAnyMethod = true
+            };
+
+            var corsOptions = new CorsOptions {
+                PolicyProvider = new CorsPolicyProvider {
+                    PolicyResolver = request => Task.FromResult(
+                        request.Path.ToString().StartsWith("/auth/token") ? tokenCorsPolicy : null
+                    )
+                }
+            };
+            app.UseCors(corsOptions);
+
             // Enable the application to use a cookie to store information for the signed in user
             // and to use a cookie to temporarily store information about a user logging in with a third party login provider
             app.UseCookieAuthentication(new CookieAuthenticationOptions());

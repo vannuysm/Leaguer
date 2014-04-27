@@ -7,7 +7,7 @@ namespace Leaguerly.Api.Models
     public class Manager
     {
         public int Id { get; set; }
-        public Contact Contact { get; set; }
+        public Profile Profile { get; set; }
 
         [IgnoreDataMember]
         public ICollection<Team> Teams { get; set; }
@@ -17,8 +17,8 @@ namespace Leaguerly.Api.Models
                 Teams = new Collection<Team>();
             }
 
-            if (Contact == null) {
-                Contact = new Contact();
+            if (Profile == null) {
+                Profile = new Profile();
             }
         }
     }

@@ -75,8 +75,17 @@ namespace Leaguerly.Api.Controllers
             return Ok(goals);
         }
 
-        [Route("divisions/{id}")]
-        public async Task<IHttpActionResult> GetByDivision(int id) {
+        [Route("divisions/{alias}")]
+        public async Task<IHttpActionResult> GetByDivision(string alias) {
+            var divisionId = await _db.Divisions
+                .Where(division => division.Alias == alias)
+                .Select(division => division.Id)
+                .SingleOrDefaultAsync();
+
+            if (divisionId == 0) {
+                return NotFound();
+            }
+
             var goals = await _db.Goals
                 .Join(_db.GameResults,
                     goal => goal.GameResultId,
@@ -88,7 +97,7 @@ namespace Leaguerly.Api.Controllers
                     game => game.Id,
                     (grg, game) => new { game.DivisionId, grg.Goal.Player, grg.Goal.Count }
                 )
-                .Where(gg => gg.DivisionId == id)
+                .Where(gg => gg.DivisionId == divisionId)
                 .GroupBy(gg => gg.Player)
                 .Select(group => new {
                     Player = group.Key,

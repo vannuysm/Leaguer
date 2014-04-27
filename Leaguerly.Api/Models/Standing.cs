@@ -30,7 +30,10 @@ namespace Leaguerly.Api.Models
                 .Distinct();
 
             var standings = (from team in teams
-                let teamGames = games.Where(game => game.HomeTeam.Id == team.Id || game.AwayTeam.Id == team.Id).ToList()
+                let teamGames = games.Where(game =>
+                    (game.HomeTeam.Id == team.Id || game.AwayTeam.Id == team.Id) &&
+                    game.Result.IncludeInStandings
+                ).ToList()
                 let scores = teamGames.Select(Score.GetScore).ToList()
                 select new Standing {
                     Team = team,

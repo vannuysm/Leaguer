@@ -34,16 +34,70 @@ namespace Leaguerly.Api.Controllers
             return Ok(division);
         }
 
-        [Route("{id}/standings")]
-        public async Task<IHttpActionResult> GetDivisionStandings(int id) {
+        [Route("{alias}/schedule")]
+        public async Task<IHttpActionResult> GetDivisionSchedule(string alias) {
+            var divisionId = await _db.Divisions
+                .Where(division => division.Alias == alias)
+                .Select(division => division.Id)
+                .SingleOrDefaultAsync();
+
+            if (divisionId == 0) {
+                return NotFound();
+            }
+
             var games = await _db.Games
                 .WithDetails()
-                .Where(game => game.DivisionId == id && game.Result.Id > 0)
+                .Where(game => game.DivisionId == divisionId)
+                .ToListAsync();
+
+            var schedule = games
+                .GroupBy(game => game.Date.Date)
+                .Select(group => new {
+                    Date = group.Key,
+                    Games = group
+                })
+                .OrderBy(group => group.Date);
+
+            return Ok(schedule);
+        }
+
+        [Route("{alias}/standings")]
+        public async Task<IHttpActionResult> GetDivisionStandings(string alias) {
+            var divisionId = await _db.Divisions
+                .Where(division => division.Alias == alias)
+                .Select(division => division.Id)
+                .SingleOrDefaultAsync();
+
+            if (divisionId == 0) {
+                return NotFound();
+            }
+
+            var games = await _db.Games
+                .WithDetails()
+                .Where(game => game.DivisionId == divisionId && game.Result.Id > 0)
                 .ToListAsync();
 
             var standings = Standing.CalculateStandings(games);
 
             return Ok(standings);
+        }
+
+        [Route("{alias}/teams")]
+        public async Task<IHttpActionResult> GetDivisionTeams(string alias) {
+            var divisionId = await _db.Divisions
+                .Where(division => division.Alias == alias)
+                .Select(division => division.Id)
+                .SingleOrDefaultAsync();
+
+            if (divisionId == 0) {
+                return NotFound();
+            }
+
+            var teams = await _db.Teams
+                .Where(team => team.Division.Id == divisionId)
+                .ToListAsync();
+
+            return Ok(teams);
         }
 
         [Authorize(Roles = "Admin")]

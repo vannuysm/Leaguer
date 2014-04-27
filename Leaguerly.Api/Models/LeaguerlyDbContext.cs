@@ -14,7 +14,7 @@ namespace Leaguerly.Api.Models
         public DbSet<GameResult> GameResults { get; set; }
         public DbSet<Goal> Goals { get; set; }
         public DbSet<Location> Locations { get; set; }
-        public DbSet<Contact> Contacts { get; set; }
+        public DbSet<Profile> Profiles { get; set; }
         public DbSet<Player> Players { get; set; }
         public DbSet<Manager> Managers { get; set; }
 
@@ -24,7 +24,7 @@ namespace Leaguerly.Api.Models
             RegisterLeagueModel(modelBuilder);
             RegisterDivisionModel(modelBuilder);
             RegisterTeamModel(modelBuilder);
-            RegisterContactModel(modelBuilder);
+            RegisterProfileModel(modelBuilder);
             RegisterPlayerModel(modelBuilder);
             RegisterManagerModel(modelBuilder);
             RegisterIdentityModel(modelBuilder);
@@ -33,7 +33,7 @@ namespace Leaguerly.Api.Models
         private void RegisterLeagueModel(DbModelBuilder modelBuilder) {
             modelBuilder.Entity<League>()
                 .Property(league => league.Name)
-                .HasMaxLength(100)
+                .HasMaxLength(128)
                 .IsRequired();
 
             modelBuilder.Entity<League>()
@@ -46,7 +46,7 @@ namespace Leaguerly.Api.Models
         private void RegisterDivisionModel(DbModelBuilder modelBuilder) {
             modelBuilder.Entity<Division>()
                 .Property(division => division.Name)
-                .HasMaxLength(100)
+                .HasMaxLength(128)
                 .IsRequired();
 
             modelBuilder.Entity<Division>()
@@ -59,29 +59,34 @@ namespace Leaguerly.Api.Models
         private void RegisterTeamModel(DbModelBuilder modelBuilder) {
             modelBuilder.Entity<Team>()
                 .Property(team => team.Name)
-                .HasMaxLength(100)
+                .HasMaxLength(128)
                 .IsRequired();
         }
 
-        private void RegisterContactModel(DbModelBuilder modelBuilder) {
-            modelBuilder.Entity<Contact>()
-                .Property(contact => contact.FirstName)
-                .HasMaxLength(100)
+        private void RegisterProfileModel(DbModelBuilder modelBuilder) {
+            modelBuilder.Entity<Profile>()
+                .Property(profile => profile.UserId)
+                .HasMaxLength(128);
+
+            modelBuilder.Entity<Profile>()
+                .Property(profile => profile.FirstName)
+                .HasMaxLength(128)
                 .IsRequired();
 
-            modelBuilder.Entity<Contact>()
-                .Property(contact => contact.LastName)
-                .HasMaxLength(100)
+            modelBuilder.Entity<Profile>()
+                .Property(profile => profile.LastName)
+                .HasMaxLength(128)
                 .IsRequired();
 
-            modelBuilder.Entity<Contact>()
-                .Property(contact => contact.Email)
+            modelBuilder.Entity<Profile>()
+                .Property(profile => profile.Email)
                 .HasMaxLength(50)
                 .IsRequired()
                 .HasColumnAnnotation(
                     "Index",
                     new IndexAnnotation(new IndexAttribute { IsUnique = true })
                 );
+
         }
 
         private void RegisterPlayerModel(DbModelBuilder modelBuilder) {

@@ -1,7 +1,7 @@
-﻿using System.Linq;
-using Leaguerly.Api.Extensions;
+﻿using Leaguerly.Api.Extensions;
 using Leaguerly.Api.Models;
 using System.Data.Entity;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -37,19 +37,24 @@ namespace Leaguerly.Api.Controllers
                 return StatusCode(HttpStatusCodeExtensions.UnprocessableEntity);
             }
 
-            var playerExists = await _db.Players.AnyAsync(p => p.Contact.Email == player.Contact.Email);
+            var playerExists = await _db.Players.AnyAsync(p => p.Profile.Email == player.Profile.Email);
             if (playerExists) {
                 return Conflict();
             }
 
-            player.Contact.Id = await _db.Contacts
-                .Where(p => p.Email == player.Contact.Email)
-                .Select(p => p.Id)
+            var existingProfile = await _db.Profiles
+                .Where(p => p.Email == player.Profile.Email)
                 .SingleOrDefaultAsync();
 
             _db.Players.Add(player);
-            if (player.Contact.Id > 0) {
-                _db.Entry(player.Contact).State = EntityState.Modified;
+            if (existingProfile != null) {
+                player.Profile.Id = existingProfile.Id;
+                player.Profile.UserId = await _db.Users
+                    .Where(user => user.Email == player.Profile.Email)
+                    .Select(user => user.Id)
+                    .SingleOrDefaultAsync() ?? existingProfile.UserId;
+
+                _db.Entry(player.Profile).State = EntityState.Modified;
             }
 
             await _db.SaveChangesAsync();

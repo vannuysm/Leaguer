@@ -1,8 +1,9 @@
-﻿using Leaguerly.Api.Models;
+﻿using System.Data.Entity;
+using System.Linq;
+using Leaguerly.Api.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.Cookies;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -13,31 +14,50 @@ namespace Leaguerly.Api.Controllers
     [RoutePrefix("api/account")]
     public class AccountController : ApiController
     {
-        public UserManager<IdentityUser> UserManager { get; private set; }
-        public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; private set; }
+        private readonly LeaguerlyDbContext _db;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public AccountController() : this(Startup.UserManagerFactory(),
-            Startup.OAuthOptions.AccessTokenFormat
-        ) {}
+        public AccountController(LeaguerlyDbContext db, UserManager<IdentityUser> userManager) {
+            _db = db;
+            _userManager = userManager;
+        }
 
-        public AccountController(UserManager<IdentityUser> userManager,
-            ISecureDataFormat<AuthenticationTicket> accessTokenFormat
-        ) {
-            UserManager = userManager;
-            AccessTokenFormat = accessTokenFormat;
+        // GET api/account/current
+        [Route("current")]
+        public async Task<IHttpActionResult> GetCurrent() {
+            var userId = User.Identity.GetUserId();
+            var viewProfile = new ViewProfileModel {
+                Profile = await _db.Profiles.SingleOrDefaultAsync(c => c.UserId == userId) ??
+                    new Profile { UserId = userId },
+
+                ManagerTeams = await _db.Teams
+                    .Include(team => team.Division)
+                    .Include(team => team.Manager)
+                    .Where(team => team.Manager.Profile.UserId == userId)
+                    .ToListAsync(),
+
+                PlayerTeams = await _db.Players
+                    .Include(player => player.Teams.Select(team => team.Division))
+                    .Include(player => player.Teams.Select(team => team.Manager))
+                    .Where(player => player.Profile.UserId == userId)
+                    .SelectMany(player => player.Teams)
+                    .ToListAsync()
+            };
+
+            return Ok(viewProfile);
         }
 
         // GET api/account/roles
         [Authorize(Roles = "Admin")]
         [Route("roles")]
         public async Task<IHttpActionResult> GetRoles(string userName) {
-            var user = await UserManager.FindByNameAsync(userName);
+            var user = await _userManager.FindByNameAsync(userName);
 
             if (user == null) {
                 return NotFound();
             }
 
-            var roles = await UserManager.GetRolesAsync(user.Id);
+            var roles = await _userManager.GetRolesAsync(user.Id);
 
             return Ok(roles);
         }
@@ -46,13 +66,13 @@ namespace Leaguerly.Api.Controllers
         [Authorize(Roles = "Admin")]
         [Route("roles")]
         public async Task<IHttpActionResult> AddRoleToUser(AddRoleBindingModel model) {
-            var user = await UserManager.FindByNameAsync(model.UserName);
+            var user = await _userManager.FindByNameAsync(model.UserName);
 
             if (user == null) {
                 return NotFound();
             }
 
-            var result = await UserManager.AddToRoleAsync(user.Id, model.Role);
+            var result = await _userManager.AddToRoleAsync(user.Id, model.Role);
             var errorResult = GetErrorResult(result);
 
             if (errorResult != null) {
@@ -72,20 +92,13 @@ namespace Leaguerly.Api.Controllers
 
             var user = new IdentityUser { UserName = model.UserName };
 
-            var result = await UserManager.CreateAsync(user, model.Password);
+            var result = await _userManager.CreateAsync(user, model.Password);
             var errorResult = GetErrorResult(result);
 
             if (errorResult != null) {
                 return errorResult;
             }
 
-            return Ok();
-        }
-
-        // POST api/account/logout
-        [Route("logout")]
-        public IHttpActionResult Logout() {
-            Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
             return Ok();
         }
 
@@ -96,7 +109,7 @@ namespace Leaguerly.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var result = await UserManager.ChangePasswordAsync(
+            var result = await _userManager.ChangePasswordAsync(
                 User.Identity.GetUserId(), model.OldPassword, model.NewPassword
             );
             var errorResult = GetErrorResult(result);
@@ -110,7 +123,7 @@ namespace Leaguerly.Api.Controllers
 
         protected override void Dispose(bool disposing) {
             if (disposing) {
-                UserManager.Dispose();
+                _userManager.Dispose();
             }
 
             base.Dispose(disposing);
