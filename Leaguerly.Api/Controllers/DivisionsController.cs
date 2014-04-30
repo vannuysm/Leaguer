@@ -16,14 +16,6 @@ namespace Leaguerly.Api.Controllers
             _db = db;
         }
 
-        public async Task<IHttpActionResult> GetByLeagueId(int leagueId) {
-            var divisions = await _db.Divisions
-                .Where(division => division.LeagueId == leagueId)
-                .ToListAsync();
-
-            return Ok(divisions);
-        }
-
         public async Task<IHttpActionResult> Get(int id) {
             var division = await _db.Divisions.FindAsync(id);
 
@@ -98,6 +90,25 @@ namespace Leaguerly.Api.Controllers
                 .ToListAsync();
 
             return Ok(teams);
+        }
+
+        [Route("{alias}/games")]
+        public async Task<IHttpActionResult> GetDivisionGames(string alias) {
+            var divisionId = await _db.Divisions
+                .Where(division => division.Alias == alias)
+                .Select(division => division.Id)
+                .SingleOrDefaultAsync();
+
+            if (divisionId == 0) {
+                return NotFound();
+            }
+
+            var games = await _db.Games
+                .WithDetails()
+                .Where(game => game.DivisionId == divisionId)
+                .ToListAsync();
+
+            return Ok(games);
         }
 
         [Authorize(Roles = "Admin")]

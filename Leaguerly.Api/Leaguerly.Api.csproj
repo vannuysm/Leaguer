@@ -160,6 +160,10 @@
     <Compile Include="Migrations\201404270344551_AddedDivisionAliasIndex.Designer.cs">
       <DependentUpon>201404270344551_AddedDivisionAliasIndex.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201404271734172_AddedLeagueAliasIndex.cs" />
+    <Compile Include="Migrations\201404271734172_AddedLeagueAliasIndex.Designer.cs">
+      <DependentUpon>201404271734172_AddedLeagueAliasIndex.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\Address.cs" />
@@ -206,6 +210,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201404270344551_AddedDivisionAliasIndex.resx">
       <DependentUpon>201404270344551_AddedDivisionAliasIndex.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201404271734172_AddedLeagueAliasIndex.resx">
+      <DependentUpon>201404271734172_AddedLeagueAliasIndex.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

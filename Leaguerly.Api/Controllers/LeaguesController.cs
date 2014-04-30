@@ -1,11 +1,13 @@
 ﻿using Leaguerly.Api.Models;
 using System.Data.Entity;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace Leaguerly.Api.Controllers
 {
+    [RoutePrefix("api/leagues")]
     public class LeaguesController : ApiController
     {
         private readonly LeaguerlyDbContext _db;
@@ -20,14 +22,18 @@ namespace Leaguerly.Api.Controllers
             return Ok(leagues);
         }
 
-        public async Task<IHttpActionResult> Get(int id) {
-            var league = await _db.Leagues.FindAsync(id);
+        [Route("{alias}/divisions")]
+        public async Task<IHttpActionResult> GetLeagueDivisions(string alias) {
+            var leagueId = await _db.Leagues
+                .Where(league => league.Alias == alias)
+                .Select(league => league.Id)
+                .SingleOrDefaultAsync();
 
-            if (league == null) {
-                return NotFound();
-            }
+            var divisions = await _db.Divisions
+                .Where(division => division.LeagueId == leagueId)
+                .ToListAsync();
 
-            return Ok(league);
+            return Ok(divisions);
         }
 
         [Authorize(Roles = "Admin")]
