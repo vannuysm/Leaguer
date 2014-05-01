@@ -32,6 +32,7 @@ namespace Leaguerly.Api.Controllers
             return Ok(player);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IHttpActionResult> Post([FromBody] Player player) {
             if (!ModelState.IsValid) {
                 return StatusCode(HttpStatusCodeExtensions.UnprocessableEntity);
@@ -62,6 +63,7 @@ namespace Leaguerly.Api.Controllers
             return CreatedAtRoute("DefaultApi", new { id = player.Id }, player);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IHttpActionResult> Put(int id, [FromBody] Player player) {
             player.Id = id;
 
@@ -71,6 +73,7 @@ namespace Leaguerly.Api.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IHttpActionResult> Delete(int id) {
             var player = new Player { Id = id };
 

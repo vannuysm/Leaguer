@@ -131,6 +131,7 @@
     <Compile Include="Controllers\GamesController.cs" />
     <Compile Include="Controllers\GoalsController.cs" />
     <Compile Include="Controllers\LeaguesController.cs" />
+    <Compile Include="Controllers\LocationsController.cs" />
     <Compile Include="Controllers\ManagersController.cs" />
     <Compile Include="Controllers\PlayersController.cs" />
     <Compile Include="Controllers\TeamsController.cs" />
@@ -163,6 +164,10 @@
     <Compile Include="Migrations\201404271734172_AddedLeagueAliasIndex.cs" />
     <Compile Include="Migrations\201404271734172_AddedLeagueAliasIndex.Designer.cs">
       <DependentUpon>201404271734172_AddedLeagueAliasIndex.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201405010228382_RenamedFKs.cs" />
+    <Compile Include="Migrations\201405010228382_RenamedFKs.Designer.cs">
+      <DependentUpon>201405010228382_RenamedFKs.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
@@ -213,6 +218,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201404271734172_AddedLeagueAliasIndex.resx">
       <DependentUpon>201404271734172_AddedLeagueAliasIndex.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405010228382_RenamedFKs.resx">
+      <DependentUpon>201405010228382_RenamedFKs.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

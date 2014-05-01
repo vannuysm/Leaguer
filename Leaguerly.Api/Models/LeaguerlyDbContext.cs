@@ -18,7 +18,11 @@ namespace Leaguerly.Api.Models
         public DbSet<Player> Players { get; set; }
         public DbSet<Manager> Managers { get; set; }
 
-        public LeaguerlyDbContext() : base("LeaguerlyDb") { }
+        public LeaguerlyDbContext()
+            : base("LeaguerlyDb") {
+
+            this.Configuration.LazyLoadingEnabled = false;
+        }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder) {
             RegisterLeagueModel(modelBuilder);

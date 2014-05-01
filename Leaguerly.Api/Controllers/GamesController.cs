@@ -1,5 +1,6 @@
 ﻿using Leaguerly.Api.Models;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -37,8 +38,30 @@ namespace Leaguerly.Api.Controllers
 
         [Authorize(Roles = "Admin")]
         public async Task<IHttpActionResult> Post([FromBody] Game game) {
-            _db.Games.Add(game);
-            await _db.SaveChangesAsync();
+
+            try {
+                var newGame = new Game {
+                    AwayTeam = null,
+                    AwayTeamId = game.AwayTeam.Id,
+                    HomeTeam = null,
+                    HomeTeamId = game.HomeTeam.Id,
+                    Date = game.Date,
+                    DivisionId = game.DivisionId,
+                    Location = null,
+                    LocationId = game.Location.Id,
+                    Result = null,
+                    ResultId = null
+                };
+
+                _db.Games.Add(newGame);
+
+                await _db.SaveChangesAsync();
+
+                game.Id = newGame.Id;
+            }
+            catch (DbEntityValidationException ex) {
+                var validation = ex.EntityValidationErrors;
+            }
 
             return CreatedAtRoute("DefaultApi", new { id = game.Id }, game);
         }
