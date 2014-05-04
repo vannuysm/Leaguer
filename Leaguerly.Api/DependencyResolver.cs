@@ -15,8 +15,6 @@ namespace Leaguerly.Api
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
 
             builder.Register(d => new LeaguerlyDbContext()).AsSelf().InstancePerApiRequest();
-            builder.RegisterType<UserStore<IdentityUser>>().As<IUserStore<IdentityUser>>();
-            builder.RegisterType<UserManager<IdentityUser>>();
 
             var container = builder.Build();
             return new AutofacWebApiDependencyResolver(container);

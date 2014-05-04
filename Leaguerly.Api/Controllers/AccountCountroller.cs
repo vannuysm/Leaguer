@@ -17,9 +17,9 @@ namespace Leaguerly.Api.Controllers
         private readonly LeaguerlyDbContext _db;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public AccountController(LeaguerlyDbContext db, UserManager<IdentityUser> userManager) {
+        public AccountController(LeaguerlyDbContext db) {
             _db = db;
-            _userManager = userManager;
+            _userManager = Startup.UserManagerFactory();
         }
 
         // GET api/account/current
