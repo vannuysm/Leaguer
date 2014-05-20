@@ -15,14 +15,6 @@ namespace Leaguerly.Api.Models
         public ICollection<Player> Players { get; set; }
 
         public Team() {
-            if (Division == null) {
-                Division = new Division();
-            }
-
-            if (Manager == null) {
-                Manager = new Manager();
-            }
-
             if (Players == null) {
                 Players = new Collection<Player>();
             }

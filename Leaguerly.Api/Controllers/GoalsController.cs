@@ -109,12 +109,64 @@ namespace Leaguerly.Api.Controllers
             return Ok(goals);
         }
 
+        [Route("")]
+        [HttpGet]
+        public async Task<IHttpActionResult> GetGameGoals(int gameId, int teamId) {
+            var game = await _db.Games
+                .WithDetails()
+                .SingleOrDefaultAsync(g => g.Id == gameId);
+
+            if (game == null) {
+                return NotFound();
+            }
+
+            if (game.Result == null) {
+                return Ok(Enumerable.Empty<Goal>());
+            }
+
+            var team = await _db.Teams
+                .Include(t => t.Players)
+                .SingleOrDefaultAsync(t => t.Id == teamId);
+
+            if (team == null) {
+                return NotFound();
+            }
+
+            var players = team.Players.Select(player => player.Id);
+
+            var goals = game.Result.Goals
+                .Where(goal => players.Contains(goal.Player.Id));
+
+            return Ok(goals);
+        }
+
         [Authorize(Roles = "Admin")]
-        public async Task<IHttpActionResult> Post([FromBody] Goal goal) {
-            _db.Goals.Add(goal);
+        public async Task<IHttpActionResult> Post([FromBody] AddGoalBindingModel model) {
+            var game = await _db.Games
+                .WithDetails()
+                .SingleOrDefaultAsync(g => g.Id == model.GameId);
+
+            if (game == null) {
+                return NotFound();
+            }
+
+            if (!game.HasResult) {
+                return NotFound();
+            }
+
+            var newGoal = new Goal {
+                Player = model.Goal.Player,
+                Count = model.Goal.Count,
+                GameResultId = game.Result.Id
+            };
+
+            _db.Goals.Add(newGoal);
+
             await _db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = goal.Id }, goal);
+            model.Goal.Id = newGoal.Id;
+
+            return CreatedAtRoute("DefaultApi", new { id = model.Goal.Id }, model);
         }
 
         [Authorize(Roles = "Admin")]

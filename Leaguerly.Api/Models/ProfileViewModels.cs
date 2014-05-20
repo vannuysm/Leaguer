@@ -10,10 +10,6 @@ namespace Leaguerly.Api.Models
         public ICollection<Team> PlayerTeams { get; set; }
 
         public ViewProfileModel() {
-            if (Profile == null) {
-                Profile = new Profile();
-            }
-
             if (ManagerTeams == null) {
                 ManagerTeams = new Collection<Team>();
             }

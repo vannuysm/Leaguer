@@ -16,10 +16,6 @@ namespace Leaguerly.Api.Models
             if (Teams == null) {
                 Teams = new Collection<Team>();
             }
-
-            if (Profile == null) {
-                Profile = new Profile();
-            }
         }
     }
 }

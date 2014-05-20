@@ -85,10 +85,9 @@ namespace Leaguerly.Api.Models
             modelBuilder.Entity<Profile>()
                 .Property(profile => profile.Email)
                 .HasMaxLength(50)
-                .IsRequired()
                 .HasColumnAnnotation(
                     "Index",
-                    new IndexAnnotation(new IndexAttribute { IsUnique = true })
+                    new IndexAnnotation(new IndexAttribute { IsUnique = false })
                 );
 
         }
