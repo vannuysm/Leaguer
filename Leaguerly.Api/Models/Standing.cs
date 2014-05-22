@@ -32,7 +32,7 @@ namespace Leaguerly.Api.Models
             var standings = (from team in teams
                 let teamGames = games.Where(game =>
                     (game.HomeTeam.Id == team.Id || game.AwayTeam.Id == team.Id) &&
-                    game.Result.IncludeInStandings
+                    game.IncludeInStandings
                 ).ToList()
                 let scores = teamGames.Select(Score.GetScore).ToList()
                 select new Standing {
@@ -40,7 +40,7 @@ namespace Leaguerly.Api.Models
                     Wins = scores.Count(score => score.WinningTeamId == team.Id),
                     Losses = scores.Count(score => score.LosingTeamId == team.Id),
                     Ties = scores.Count(score => score.IsTie),
-                    Forfeits = teamGames.Count(game => game.Result.WasForfeited && game.Result.ForfeitingTeamId == team.Id),
+                    Forfeits = teamGames.Count(game => game.WasForfeited && game.ForfeitingTeamId == team.Id),
                     GamesPlayed = teamGames.Count,
                     GoalsFor = teamGames.Sum(game => {
                         var score = Score.GetScore(game);
@@ -74,16 +74,22 @@ namespace Leaguerly.Api.Models
                         headToHeadTeams.Contains(game.HomeTeam.Id) &&
                         headToHeadTeams.Contains(game.AwayTeam.Id)
                     ).ToList()
-                )
-                .OrderByDescending(standing => standing.Points)
-                .ThenByDescending(standing => standing.GoalDifferential)
-                .ThenByDescending(standing =>
-                    standings.Single(s => s.Team.Id == standing.Team.Id).GoalDifferential
                 );
 
+                if (!headToHeadStandings.Any()) {
+                    headToHeadStandings = pointGroup.Select(s => s).ToList();
+                }
+
+                var sortedHeadToHeadStandings = headToHeadStandings
+                    .OrderByDescending(standing => standing.Points)
+                    .ThenByDescending(standing => standing.GoalDifferential)
+                    .ThenByDescending(standing =>
+                        standings.Single(s => s.Team.Id == standing.Team.Id).GoalDifferential
+                    );
+
                 sortedStandings.AddRange(
-                    headToHeadStandings.Select(headToHeadStanding =>
-                        standings.Single(standing => standing.Team.Id == headToHeadStanding.Team.Id)
+                    sortedHeadToHeadStandings.Select(hth =>
+                        standings.Single(standing => standing.Team.Id == hth.Team.Id)
                     )
                 );
             }

@@ -59,6 +59,7 @@ namespace Leaguerly.Api.Controllers
 
             var player = await _db.Players
                 .Include(p => p.Teams)
+                .Include(p => p.Profile)
                 .Where(p =>
                     p.Profile.FirstName == model.FirstName &&
                     p.Profile.LastName == model.LastName

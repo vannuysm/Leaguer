@@ -17,10 +17,10 @@ namespace Leaguerly.Api.Models
             var awayTeamPlayers = game.AwayTeam.Players.Select(player => player.Id);
 
             var score = new Score {
-                HomeTeamScore = game.Result.Goals
+                HomeTeamScore = game.Goals
                     .Where(goal => homeTeamPlayers.Contains(goal.Player.Id))
                     .Sum(goal => goal.Count),
-                AwayTeamScore = game.Result.Goals
+                AwayTeamScore = game.Goals
                     .Where(goal => awayTeamPlayers.Contains(goal.Player.Id))
                     .Sum(goal => goal.Count)
             };

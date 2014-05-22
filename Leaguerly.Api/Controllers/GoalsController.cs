@@ -1,4 +1,5 @@
 ﻿using Leaguerly.Api.Models;
+using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -29,7 +30,7 @@ namespace Leaguerly.Api.Controllers
             return Ok(goals);
         }
 
-        [Route("players/{id}")]
+        [Route("players/{id}", Name = "GetPlayerGoals")]
         public async Task<IHttpActionResult> GetByPlayer(int id) {
             var player = await _db.Players.SingleOrDefaultAsync(p => p.Id == id);
 
@@ -47,15 +48,10 @@ namespace Leaguerly.Api.Controllers
         [Route("divisions")]
         public async Task<IHttpActionResult> GetAllDivisions() {
             var goals = await _db.Goals
-                .Join(_db.GameResults,
-                    goal => goal.GameResultId,
-                    gameResult => gameResult.Id,
-                    (goal, gameResult) => new { Goal = goal, GameResult = gameResult }
-                )
                 .Join(_db.Games,
-                    grg => grg.GameResult.GameId,
+                    goal => goal.GameId,
                     game => game.Id,
-                    (grg, game) => new { game.DivisionId, grg.Goal.Player, grg.Goal.Count }
+                    (goal, game) => new { game.DivisionId, goal.Player, goal.Count }
                 )
                 .Join(_db.Divisions,
                     gg => gg.DivisionId,
@@ -87,15 +83,10 @@ namespace Leaguerly.Api.Controllers
             }
 
             var goals = await _db.Goals
-                .Join(_db.GameResults,
-                    goal => goal.GameResultId,
-                    gameResult => gameResult.Id,
-                    (goal, gameResult) => new { Goal = goal, GameResult = gameResult } 
-                )
                 .Join(_db.Games,
-                    grg => grg.GameResult.GameId,
+                    goal => goal.GameId,
                     game => game.Id,
-                    (grg, game) => new { game.DivisionId, grg.Goal.Player, grg.Goal.Count }
+                    (goal, game) => new { game.DivisionId, goal.Player, goal.Count }
                 )
                 .Where(gg => gg.DivisionId == divisionId)
                 .GroupBy(gg => gg.Player)
@@ -120,10 +111,6 @@ namespace Leaguerly.Api.Controllers
                 return NotFound();
             }
 
-            if (game.Result == null) {
-                return Ok(Enumerable.Empty<Goal>());
-            }
-
             var team = await _db.Teams
                 .Include(t => t.Players)
                 .SingleOrDefaultAsync(t => t.Id == teamId);
@@ -134,13 +121,15 @@ namespace Leaguerly.Api.Controllers
 
             var players = team.Players.Select(player => player.Id);
 
-            var goals = game.Result.Goals
+            var goals = game.Goals
                 .Where(goal => players.Contains(goal.Player.Id));
 
             return Ok(goals);
         }
 
         [Authorize(Roles = "Admin")]
+        [Route("")]
+        [HttpPost]
         public async Task<IHttpActionResult> Post([FromBody] AddGoalBindingModel model) {
             var game = await _db.Games
                 .WithDetails()
@@ -150,23 +139,16 @@ namespace Leaguerly.Api.Controllers
                 return NotFound();
             }
 
-            if (!game.HasResult) {
-                return NotFound();
-            }
-
             var newGoal = new Goal {
-                Player = model.Goal.Player,
-                Count = model.Goal.Count,
-                GameResultId = game.Result.Id
+                PlayerId = model.PlayerId,
+                Count = model.Count
             };
 
-            _db.Goals.Add(newGoal);
+            game.Goals.Add(newGoal);
 
             await _db.SaveChangesAsync();
 
-            model.Goal.Id = newGoal.Id;
-
-            return CreatedAtRoute("DefaultApi", new { id = model.Goal.Id }, model);
+            return CreatedAtRoute("GetPlayerGoals", new { id = model.PlayerId }, newGoal);
         }
 
         [Authorize(Roles = "Admin")]
@@ -183,7 +165,9 @@ namespace Leaguerly.Api.Controllers
         public async Task<IHttpActionResult> Delete(int id) {
             var goal = new Goal { Id = id };
 
+            _db.Goals.Attach(goal);
             _db.Goals.Remove(goal);
+
             await _db.SaveChangesAsync();
 
             return StatusCode(HttpStatusCode.NoContent);

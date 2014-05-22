@@ -173,6 +173,14 @@
     <Compile Include="Migrations\201405090032537_ProfileEmailNotRequired.Designer.cs">
       <DependentUpon>201405090032537_ProfileEmailNotRequired.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201405200114250_RenamedPlayerId.cs" />
+    <Compile Include="Migrations\201405200114250_RenamedPlayerId.Designer.cs">
+      <DependentUpon>201405200114250_RenamedPlayerId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201405200349453_RemovedGameResult.cs" />
+    <Compile Include="Migrations\201405200349453_RemovedGameResult.Designer.cs">
+      <DependentUpon>201405200349453_RemovedGameResult.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\Address.cs" />
@@ -180,7 +188,6 @@
     <Compile Include="Models\Profile.cs" />
     <Compile Include="Models\Division.cs" />
     <Compile Include="Models\Game.cs" />
-    <Compile Include="Models\GameResult.cs" />
     <Compile Include="Models\Goal.cs" />
     <Compile Include="Models\League.cs" />
     <Compile Include="Models\LeaguerlyDbContext.cs" />
@@ -230,6 +237,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201405090032537_ProfileEmailNotRequired.resx">
       <DependentUpon>201405090032537_ProfileEmailNotRequired.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405200114250_RenamedPlayerId.resx">
+      <DependentUpon>201405200114250_RenamedPlayerId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405200349453_RemovedGameResult.resx">
+      <DependentUpon>201405200349453_RemovedGameResult.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

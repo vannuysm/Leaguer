@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
 
 namespace Leaguerly.Api.Models
@@ -20,11 +22,17 @@ namespace Leaguerly.Api.Models
         public int LocationId { get; set; }
         public Location Location { get; set; }
 
-        [IgnoreDataMember]
-        public int? ResultId { get; set; }
-        public GameResult Result { get; set; }
-        public bool HasResult { get { return Result != null && Result.Id > 0; } }
+        public bool WasForfeited { get; set; }
+        public int? ForfeitingTeamId { get; set; }
+        public bool IncludeInStandings { get; set; }
+        public ICollection<Goal> Goals { get; set; }
 
         public int DivisionId { get; set; }
+
+        public Game() {
+            if (Goals == null) {
+                Goals = new Collection<Goal>();
+            }
+        }
     }
 }

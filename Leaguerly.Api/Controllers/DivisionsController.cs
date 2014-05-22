@@ -66,7 +66,7 @@ namespace Leaguerly.Api.Controllers
 
             var games = await _db.Games
                 .WithDetails()
-                .Where(game => game.DivisionId == divisionId && game.Result.Id > 0)
+                .Where(game => game.DivisionId == divisionId && game.IncludeInStandings)
                 .ToListAsync();
 
             var standings = Standing.CalculateStandings(games);
