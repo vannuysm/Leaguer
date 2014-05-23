@@ -1,4 +1,5 @@
 ﻿using Leaguerly.Api.Models;
+using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -103,12 +104,17 @@ namespace Leaguerly.Api.Controllers
                 return NotFound();
             }
 
-            var games = await _db.Games
-                .WithDetails()
-                .Where(game => game.DivisionId == divisionId)
-                .ToListAsync();
+            try {
+                var games = await _db.Games
+                    .WithDetails()
+                    .Where(game => game.DivisionId == divisionId)
+                    .ToListAsync();
 
-            return Ok(games);
+                return Ok(games);
+            }
+            catch (Exception ex) {
+                throw;
+            }
         }
 
         [Authorize(Roles = "Admin")]

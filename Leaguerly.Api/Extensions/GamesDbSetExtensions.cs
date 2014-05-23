@@ -14,6 +14,9 @@ public static class GamesDbSetExtensions
             .Include(game => game.Goals)
             .Include(game => game.Goals.Select(goal => goal.Player))
             .Include(game => game.Goals.Select(goal => goal.Player.Profile))
-            .Include(game => game.Goals.Select(goal => goal.Player.Teams));
+            .Include(game => game.Goals.Select(goal => goal.Player.Teams))
+            .Include(game => game.Bookings)
+            .Include(game => game.Bookings.Select(booking => booking.Player))
+            .Include(game => game.Bookings.Select(booking => booking.Player.Profile));
     }
 }

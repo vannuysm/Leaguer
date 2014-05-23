@@ -16,6 +16,7 @@ namespace Leaguerly.Api.Models
         public DbSet<Profile> Profiles { get; set; }
         public DbSet<Player> Players { get; set; }
         public DbSet<Manager> Managers { get; set; }
+        public DbSet<Booking> Bookings { get; set; }
 
         public LeaguerlyDbContext()
             : base("LeaguerlyDb") {
@@ -31,6 +32,7 @@ namespace Leaguerly.Api.Models
             RegisterPlayerModel(modelBuilder);
             RegisterManagerModel(modelBuilder);
             RegisterIdentityModel(modelBuilder);
+            RegisterBookingModel(modelBuilder);
         }
 
         private void RegisterLeagueModel(DbModelBuilder modelBuilder) {
@@ -93,6 +95,14 @@ namespace Leaguerly.Api.Models
 
         private void RegisterPlayerModel(DbModelBuilder modelBuilder) {
             modelBuilder.Entity<Player>().ToTable("Players");
+            modelBuilder.Entity<Player>()
+                .HasMany(player => player.Teams)
+                .WithMany(team => team.Players)
+                .Map(relationship => {
+                    relationship.ToTable("PlayerTeams");
+                    relationship.MapLeftKey("Player_Id");
+                    relationship.MapRightKey("Team_Id");
+                });
         }
 
         private void RegisterManagerModel(DbModelBuilder modelBuilder) {
@@ -103,6 +113,17 @@ namespace Leaguerly.Api.Models
             modelBuilder.Entity<IdentityUserLogin>().HasKey<string>(l => l.UserId);
             modelBuilder.Entity<IdentityRole>().HasKey<string>(r => r.Id);
             modelBuilder.Entity<IdentityUserRole>().HasKey(r => new { r.RoleId, r.UserId });
+        }
+
+        private void RegisterBookingModel(DbModelBuilder modelBuilder) {
+            modelBuilder.Entity<Booking>()
+                .Property(booking => booking.MisconductCode)
+                .HasMaxLength(2)
+                .IsFixedLength()
+                .HasColumnAnnotation(
+                    "Index",
+                    new IndexAnnotation(new IndexAttribute { IsUnique = false })
+                );
         }
     }
 }

@@ -26,12 +26,17 @@ namespace Leaguerly.Api.Models
         public int? ForfeitingTeamId { get; set; }
         public bool IncludeInStandings { get; set; }
         public ICollection<Goal> Goals { get; set; }
+        public ICollection<Booking> Bookings { get; set; }
 
         public int DivisionId { get; set; }
 
         public Game() {
             if (Goals == null) {
                 Goals = new Collection<Goal>();
+            }
+
+            if (Bookings == null) {
+                Bookings = new Collection<Booking>();
             }
         }
     }

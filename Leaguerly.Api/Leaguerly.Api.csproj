@@ -127,12 +127,14 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountCountroller.cs" />
+    <Compile Include="Controllers\BookingsController.cs" />
     <Compile Include="Controllers\DivisionsController.cs" />
     <Compile Include="Controllers\GamesController.cs" />
     <Compile Include="Controllers\GoalsController.cs" />
     <Compile Include="Controllers\LeaguesController.cs" />
     <Compile Include="Controllers\LocationsController.cs" />
     <Compile Include="Controllers\ManagersController.cs" />
+    <Compile Include="Controllers\PenaltyCardsController.cs" />
     <Compile Include="Controllers\PlayersController.cs" />
     <Compile Include="Controllers\TeamsController.cs" />
     <Compile Include="DependencyResolver.cs" />
@@ -181,10 +183,15 @@
     <Compile Include="Migrations\201405200349453_RemovedGameResult.Designer.cs">
       <DependentUpon>201405200349453_RemovedGameResult.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201405230419069_AddedPlayerToBooking.cs" />
+    <Compile Include="Migrations\201405230419069_AddedPlayerToBooking.Designer.cs">
+      <DependentUpon>201405230419069_AddedPlayerToBooking.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\GoalBindingModels.cs" />
+    <Compile Include="Models\PenaltyModels.cs" />
     <Compile Include="Models\Profile.cs" />
     <Compile Include="Models\Division.cs" />
     <Compile Include="Models\Game.cs" />
@@ -243,6 +250,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201405200349453_RemovedGameResult.resx">
       <DependentUpon>201405200349453_RemovedGameResult.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405230419069_AddedPlayerToBooking.resx">
+      <DependentUpon>201405230419069_AddedPlayerToBooking.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
