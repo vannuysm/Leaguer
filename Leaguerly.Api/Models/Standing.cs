@@ -63,8 +63,16 @@ namespace Leaguerly.Api.Models
                 .GroupBy(standing => standing.Points);
 
             foreach (var pointGroup in pointGroups) {
-                if (pointGroup.Count() == 1) {
+                var teamsInGroup = pointGroup.Count();
+
+                if (teamsInGroup == 1) {
                     sortedStandings.Add(pointGroup.Single());
+                    continue;
+                }
+
+                if (teamsInGroup > 2) {
+                    var groupStandings = pointGroup.Select(s => s).ToList();
+                    sortedStandings.AddRange(LastSort(groupStandings));
                     continue;
                 }
 
@@ -80,12 +88,7 @@ namespace Leaguerly.Api.Models
                     headToHeadStandings = pointGroup.Select(s => s).ToList();
                 }
 
-                var sortedHeadToHeadStandings = headToHeadStandings
-                    .OrderByDescending(standing => standing.Points)
-                    .ThenByDescending(standing => standing.GoalDifferential)
-                    .ThenByDescending(standing =>
-                        standings.Single(s => s.Team.Id == standing.Team.Id).GoalDifferential
-                    );
+                var sortedHeadToHeadStandings = LastSort(headToHeadStandings);
 
                 sortedStandings.AddRange(
                     sortedHeadToHeadStandings.Select(hth =>
@@ -95,6 +98,16 @@ namespace Leaguerly.Api.Models
             }
 
             return sortedStandings;
+        }
+
+        private static List<Standing> LastSort(List<Standing> standings) {
+            return standings
+            .OrderByDescending(standing => standing.Points)
+            .ThenByDescending(standing => standing.GoalDifferential)
+            .ThenByDescending(standing =>
+                standings.Single(s => s.Team.Id == standing.Team.Id).GoalDifferential
+            )
+            .ToList();
         }
     }
 }
