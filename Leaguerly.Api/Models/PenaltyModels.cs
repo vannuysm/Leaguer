@@ -15,6 +15,7 @@ namespace Leaguerly.Api.Models
     public class PenaltyCard
     {
         public string Description { get; set; }
+        public string Title { get; set; }
         public int Points { get; set; }
         public PenaltyCardType Type { get; set; }
     }
@@ -35,6 +36,7 @@ namespace Leaguerly.Api.Models
             { 
                 "UB", new PenaltyCard {
                     Description = "UB : Unsporting Behavior",
+                    Title = "Unsporting Behavior",
                     Points = 1,
                     Type = PenaltyCardType.Yellow
                 }
@@ -42,6 +44,7 @@ namespace Leaguerly.Api.Models
             { 
                 "DI", new PenaltyCard {
                     Description = "DI : Dissent by word or action",
+                    Title = "Dissent by word or action",
                     Points = 1,
                     Type = PenaltyCardType.Yellow
                 }
@@ -49,6 +52,7 @@ namespace Leaguerly.Api.Models
             { 
                 "PI", new PenaltyCard {
                     Description = "PI : Persistent infringement of the rules",
+                    Title = "Persistent infringement of the rules",
                     Points = 1,
                     Type = PenaltyCardType.Yellow
                 }
@@ -56,6 +60,7 @@ namespace Leaguerly.Api.Models
             { 
                 "DR", new PenaltyCard {
                     Description = "DR : Delays the restart of play",
+                    Title = "Delays the restart of play",
                     Points = 1,
                     Type = PenaltyCardType.Yellow
                 }
@@ -63,6 +68,7 @@ namespace Leaguerly.Api.Models
             { 
                 "FD", new PenaltyCard {
                     Description = "FD : Fails to respect required distance at restart of play (corner or free kick)",
+                    Title = "Fails to respect required distance at restart of play (corner or free kick)",
                     Points = 1,
                     Type = PenaltyCardType.Yellow
                 }
@@ -70,6 +76,7 @@ namespace Leaguerly.Api.Models
             { 
                 "EN", new PenaltyCard {
                     Description = "EN : Enters or reenters play without permission of the referee",
+                    Title = "Enters or reenters play without permission of the referee",
                     Points = 1,
                     Type = PenaltyCardType.Yellow
                 }
@@ -77,6 +84,7 @@ namespace Leaguerly.Api.Models
             { 
                 "LE", new PenaltyCard {
                     Description = "LE : Deliberately leaves play without permissions of the referee",
+                    Title = "Deliberately leaves play without permissions of the referee",
                     Points = 1,
                     Type = PenaltyCardType.Yellow
                 }
@@ -84,6 +92,7 @@ namespace Leaguerly.Api.Models
             { 
                 "FP", new PenaltyCard {
                     Description = "FP : Seriously foul play",
+                    Title = "Seriously foul play",
                     Points = 3,
                     Type = PenaltyCardType.Red
                 }
@@ -91,6 +100,7 @@ namespace Leaguerly.Api.Models
             { 
                 "VC", new PenaltyCard {
                     Description = "VC : Violent conduct",
+                    Title = "Violent conduct",
                     Points = 3,
                     Type = PenaltyCardType.Red
                 }
@@ -98,6 +108,7 @@ namespace Leaguerly.Api.Models
             { 
                 "SP", new PenaltyCard {
                     Description = "SP : Spits at another player/official",
+                    Title = "Spits at another player/official",
                     Points = 3,
                     Type = PenaltyCardType.Red
                 }
@@ -105,6 +116,7 @@ namespace Leaguerly.Api.Models
             { 
                 "DH", new PenaltyCard {
                     Description = "DH : Deliberate hand ball to stop a goal",
+                    Title = "Deliberate hand ball to stop a goal",
                     Points = 2,
                     Type = PenaltyCardType.Red
                 }
@@ -112,6 +124,7 @@ namespace Leaguerly.Api.Models
             { 
                 "DF", new PenaltyCard {
                     Description = "DF : Deliberate foul to stop a goal scoring opportunity",
+                    Title = "Deliberate foul to stop a goal scoring opportunity",
                     Points = 2,
                     Type = PenaltyCardType.Red
                 }
@@ -119,6 +132,7 @@ namespace Leaguerly.Api.Models
             { 
                 "OL", new PenaltyCard {
                     Description = "OL : Offensive/insulting language or gestures",
+                    Title = "Offensive/insulting language or gestures",
                     Points = 2,
                     Type = PenaltyCardType.Red
                 }
@@ -126,6 +140,7 @@ namespace Leaguerly.Api.Models
             { 
                 "SC", new PenaltyCard {
                     Description = "SC : 2nd caution in the same match",
+                    Title = "2nd caution in the same match",
                     Points = 0,
                     Type = PenaltyCardType.Red
                 }
