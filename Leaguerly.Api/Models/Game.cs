@@ -29,6 +29,7 @@ namespace Leaguerly.Api.Models
         public int LocationId { get; set; }
         public Location Location { get; set; }
 
+        public bool WasCancelled { get; set; }
         public bool WasForfeited { get; set; }
         public int? ForfeitingTeamId { get; set; }
         public bool IncludeInStandings { get; set; }

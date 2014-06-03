@@ -192,6 +192,10 @@
     <Compile Include="Migrations\201405230419069_AddedPlayerToBooking.Designer.cs">
       <DependentUpon>201405230419069_AddedPlayerToBooking.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201406030300144_AddedCancelledFlag.cs" />
+    <Compile Include="Migrations\201406030300144_AddedCancelledFlag.Designer.cs">
+      <DependentUpon>201406030300144_AddedCancelledFlag.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\Address.cs" />
@@ -260,6 +264,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201405230419069_AddedPlayerToBooking.resx">
       <DependentUpon>201405230419069_AddedPlayerToBooking.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201406030300144_AddedCancelledFlag.resx">
+      <DependentUpon>201406030300144_AddedCancelledFlag.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
