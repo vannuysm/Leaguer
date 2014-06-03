@@ -54,6 +54,7 @@ namespace Leaguerly.Api.Controllers
             }
 
             game.IncludeInStandings = model.IncludeInStandings;
+            game.WasCancelled = model.WasCancelled;
             game.WasForfeited = model.WasForfeited;
             game.ForfeitingTeamId = model.ForfeitingTeamId;
 
